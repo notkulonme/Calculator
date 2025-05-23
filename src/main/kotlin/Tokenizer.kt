@@ -3,30 +3,29 @@
 class Tokenizer {
     private lateinit var buffer: StringBuilder
     private lateinit var tokenList: ArrayList<Token>
-    private var bufferCurrentType: TokenType? = null
+    private lateinit var bufferCurrentType: TokenType
 
-    fun tokenize(text: String){
-        buffer = StringBuilder()
-        tokenList = ArrayList()
-        bufferCurrentType = getType(text[0])
+    fun tokenize(text: String): ArrayList<Token>{
+        initTokenizer(text)
 
         for(char in text){
+
             val charType = getType(char)
-            if(bufferCurrentType == null){
-                bufferCurrentType = charType
-            }
+
             if (charType == bufferCurrentType){
                 buffer.append(char)
             }
             else{
-                if(bufferCurrentType != TokenType.NOT_TOKEN){
-                    tokenList.add(Token(value = buffer.toString(), type = bufferCurrentType!!))
-                }
+                addValidBufferToList()
                 buffer = StringBuilder()
-                bufferCurrentType = null
+                buffer.append(char)
+                bufferCurrentType = charType
 
             }
+
         }
+        addValidBufferToList()
+        return tokenList
     }
 
     fun getType(char: Char): TokenType{
@@ -44,6 +43,18 @@ class Tokenizer {
                 else
                     TokenType.NOT_TOKEN
             }
+        }
+    }
+
+    fun initTokenizer(text: String){
+        buffer = StringBuilder()
+        tokenList = ArrayList()
+        bufferCurrentType = getType(text[0])
+    }
+
+    fun addValidBufferToList(){
+        if(bufferCurrentType != TokenType.NOT_TOKEN){
+            tokenList.add(Token(value = buffer.toString(), type = bufferCurrentType))
         }
     }
 
