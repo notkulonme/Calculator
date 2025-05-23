@@ -1,5 +1,7 @@
 ﻿package hu.notkulonme
 
+import java.util.logging.Logger
+
 class Tokenizer {
     private lateinit var buffer: StringBuilder
     private lateinit var tokenList: ArrayList<Token>
@@ -28,15 +30,15 @@ class Tokenizer {
         return tokenList
     }
 
-    fun getType(char: Char): TokenType{
+    fun getType(char: Char): TokenType =
         when(char){
-            '+' -> return TokenType.PLUS
-            '-' -> return TokenType.MINUS
-            ' ' -> return TokenType.WHITESPACE
-            '/' -> return TokenType.DIVISION
-            '*' -> return TokenType.MULTIPLY
+            '+' -> TokenType.PLUS
+            '-' -> TokenType.MINUS
+            ' ' -> TokenType.WHITESPACE
+            '/' -> TokenType.DIVISION
+            '*' -> TokenType.MULTIPLY
             else -> {
-                return if (char.isDigit())
+                 if (char.isDigit())
                     TokenType.NUMBER
                 else if (char.code in 97..122)
                     TokenType.VARIABLE
@@ -44,7 +46,7 @@ class Tokenizer {
                     TokenType.NOT_TOKEN
             }
         }
-    }
+
 
     fun initTokenizer(text: String){
         buffer = StringBuilder()
