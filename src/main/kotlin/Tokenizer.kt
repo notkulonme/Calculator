@@ -1,6 +1,5 @@
 ﻿package hu.notkulonme
 
-import java.util.logging.Logger
 
 class Tokenizer {
     private lateinit var buffer: StringBuilder
