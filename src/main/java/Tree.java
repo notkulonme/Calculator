@@ -19,4 +19,31 @@ public class Tree {
         this.parent = parent;
         this.value = value;
     }
+
+    public boolean isRoot(){
+        return parent == null;
+    }
+
+    public Tree getRoot(){
+        if (isRoot())
+            return this;
+        else
+            return parent.getRoot();
+    }
+
+    public void delete(){
+        leftChild = null;
+        rightChild = null;
+        parent = null;
+        value = null;
+    }
+
+    public void removeChildren(){
+        leftChild = null;
+        rightChild = null;
+    }
+
+    public boolean hasChildren(){
+        return leftChild != null && rightChild != null;
+    }
 }
