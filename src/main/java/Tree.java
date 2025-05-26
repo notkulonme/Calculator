@@ -1,4 +1,4 @@
-import hu.notkulonme.Token;
+import hu.notkulonme.tokenizer.Token;
 
 import java.util.Arrays;
 import java.util.LinkedList;
