@@ -1,6 +1,5 @@
 ﻿package hu.notkulonme
 
-//TODO: add supprot for floats
 class Tokenizer {
     private lateinit var buffer: StringBuilder
     private lateinit var tokenList: ArrayList<Token>
