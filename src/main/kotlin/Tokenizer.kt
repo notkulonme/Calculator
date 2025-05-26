@@ -1,6 +1,6 @@
 ﻿package hu.notkulonme
 
-
+//TODO: add supprot for floats
 class Tokenizer {
     private lateinit var buffer: StringBuilder
     private lateinit var tokenList: ArrayList<Token>
@@ -13,7 +13,7 @@ class Tokenizer {
 
             val charType = getType(char)
 
-            if (charType == bufferCurrentType){
+            if (charType == bufferCurrentType  && bufferCurrentType != TokenType.OPERATOR){
                 buffer.append(char)
             }
             else{
@@ -31,11 +31,12 @@ class Tokenizer {
 
     fun getType(char: Char): TokenType =
         when(char){
-            '+' -> TokenType.PLUS
-            '-' -> TokenType.MINUS
+            '+' -> TokenType.OPERATOR
+            '-' -> TokenType.OPERATOR
             ' ' -> TokenType.WHITESPACE
-            '/' -> TokenType.DIVISION
-            '*' -> TokenType.MULTIPLY
+            '/' -> TokenType.OPERATOR
+            '*' -> TokenType.OPERATOR
+            ',' -> TokenType.NUMBER
             else -> {
                  if (char.isDigit())
                     TokenType.NUMBER
@@ -54,9 +55,21 @@ class Tokenizer {
     }
 
     fun addValidBufferToList(){
-        if(bufferCurrentType != TokenType.NOT_TOKEN){
+        if (isInvalidNumber())
+            tokenList.add(Token(value = buffer.toString(), type = TokenType.INVALID_NUMBER))
+        else
             tokenList.add(Token(value = buffer.toString(), type = bufferCurrentType))
-        }
     }
-
+    fun isInvalidNumber(): Boolean {
+        if (bufferCurrentType != TokenType.NUMBER){
+            return false
+        }else{
+            val commaCount = buffer.count { it == ',' }
+            if (buffer[0] == ',' || buffer[buffer.length-1] == ',' || commaCount > 1)
+                return true
+            else
+                return false
+        }
+        return true
+    }
 }
