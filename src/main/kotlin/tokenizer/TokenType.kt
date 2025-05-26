@@ -1,4 +1,4 @@
-﻿package hu.notkulonme
+﻿package hu.notkulonme.tokenizer
 
 //TODO: zárójel támogatása
 enum class TokenType {
