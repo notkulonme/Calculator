@@ -59,7 +59,7 @@ class Tokenizer {
     fun addValidBufferToList(){
         if (isInvalidNumber())
             tokenList.add(Token(value = buffer.toString(), type = TokenType.INVALID_NUMBER))
-        else
+        else if(!buffer.isEmpty())
             tokenList.add(Token(value = buffer.toString(), type = bufferCurrentType))
     }
     fun isInvalidNumber(): Boolean {
