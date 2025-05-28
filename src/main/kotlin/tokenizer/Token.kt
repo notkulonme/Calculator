@@ -1,7 +1,7 @@
 ﻿package hu.notkulonme.tokenizer
 
-data class Token(val value: String, val type: TokenType){
-    fun isAdditive(): Boolean{
+data class Token(val value: String, val type: TokenType) {
+    fun isAdditive(): Boolean {
         return this.value == "+" || this.value == "-"
     }
 

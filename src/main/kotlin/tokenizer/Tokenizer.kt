@@ -8,17 +8,16 @@ class Tokenizer {
     private lateinit var tokenList: ArrayList<Token>
     private lateinit var bufferCurrentType: TokenType
 
-    fun tokenize(text: String): ArrayList<Token>{
+    fun tokenize(text: String): ArrayList<Token> {
         initTokenizer(text)
 
-        for(char in text){
+        for (char in text) {
 
             val charType = getType(char)
 
-            if (charType == bufferCurrentType  && bufferCurrentType != TokenType.OPERATOR){
+            if (charType == bufferCurrentType && bufferCurrentType != TokenType.OPERATOR) {
                 buffer.append(char)
-            }
-            else{
+            } else {
                 addValidBufferToList()
                 buffer = StringBuilder()
                 buffer.append(char)
@@ -32,7 +31,7 @@ class Tokenizer {
     }
 
     fun getType(char: Char): TokenType =
-        when(char){
+        when (char) {
             '+' -> TokenType.OPERATOR
             '-' -> TokenType.OPERATOR
             ' ' -> TokenType.WHITESPACE
@@ -40,7 +39,7 @@ class Tokenizer {
             '*' -> TokenType.OPERATOR
             ',' -> TokenType.NUMBER
             else -> {
-                 if (char.isDigit())
+                if (char.isDigit())
                     TokenType.NUMBER
                 else if (char.code in 97..122)
                     TokenType.VARIABLE
@@ -50,24 +49,25 @@ class Tokenizer {
         }
 
 
-    fun initTokenizer(text: String){
+    fun initTokenizer(text: String) {
         buffer = StringBuilder()
         tokenList = ArrayList()
         bufferCurrentType = getType(text[0])
     }
 
-    fun addValidBufferToList(){
+    fun addValidBufferToList() {
         if (isInvalidNumber())
             tokenList.add(Token(value = buffer.toString(), type = TokenType.INVALID_NUMBER))
-        else if(!buffer.isEmpty())
+        else if (!buffer.isEmpty())
             tokenList.add(Token(value = buffer.toString(), type = bufferCurrentType))
     }
+
     fun isInvalidNumber(): Boolean {
-        if (bufferCurrentType != TokenType.NUMBER){
+        if (bufferCurrentType != TokenType.NUMBER) {
             return false
-        }else{
+        } else {
             val commaCount = buffer.count { it == ',' }
-            if (buffer[0] == ',' || buffer[buffer.length-1] == ',' || commaCount > 1)
+            if (buffer[0] == ',' || buffer[buffer.length - 1] == ',' || commaCount > 1)
                 return true
             else
                 return false
