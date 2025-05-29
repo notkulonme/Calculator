@@ -7,12 +7,13 @@ import hu.notkulonme.tokenizer.Token
 import hu.notkulonme.tokenizer.TokenType
 
 class Parser {
-    lateinit var tokenList: ArrayList<Token>
+    var tokenList: ArrayList<Token>
 
-
-    fun parseIntoTree(tokenList: ArrayList<Token>): Tree {
+    constructor(tokenList: ArrayList<Token>) {
         this.tokenList = tokenList
         validateTokenList()
+    }
+    fun parseIntoTree(tokenList: ArrayList<Token>): Tree {
         return Tree(null, null)
     }
 
