@@ -13,8 +13,71 @@ class Parser {
         this.tokenList = tokenList
         validateTokenList()
     }
-    fun parseIntoTree(tokenList: ArrayList<Token>): Tree {
-        return Tree(null, null)
+
+    fun parseIntoTree(): Tree {
+        val rootIndex = nextOperatorIndex(tokenList)
+        val root = Tree(null,tokenList[rootIndex])
+        root.builderLeftChild = ArrayList(tokenList.subList(0, rootIndex))
+        root.builderRightChild = ArrayList(tokenList.subList(rootIndex+1, tokenList.size))
+
+        while (root.leafLevelHasBuilder()){
+            val leafLevel = root.leafLevel
+            for (leafNode in leafLevel){
+                if (leafNode.builderLeftChild != null) {
+                    if (leafNode.builderLeftChild.size == 1 && leafNode.builderLeftChild[0].type == TokenType.NUMBER)
+                        leafNode.leftChild = Tree(leafNode, leafNode.builderLeftChild[0])
+
+
+                    if (leafNode.builderLeftChild.size != 1) {
+                        val nextLeftOperator = nextOperatorIndex(leafNode.builderLeftChild)
+                        val leftChild = Tree(leafNode, leafNode.builderLeftChild[nextLeftOperator])
+                        leftChild.builderLeftChild = ArrayList(leafNode.builderLeftChild.subList(0, nextLeftOperator))
+                        leftChild.builderRightChild = ArrayList(
+                            leafNode.builderLeftChild.subList(
+                                nextLeftOperator + 1,
+                                leafNode.builderLeftChild.size
+                            )
+                        )
+                        leafNode.leftChild = leftChild
+                    }
+                }
+                if (leafNode.builderRightChild != null) {
+                    if (leafNode.builderRightChild.size == 1 && leafNode.builderRightChild[0].type == TokenType.NUMBER)
+                        leafNode.rightChild = Tree(leafNode, leafNode.builderRightChild[0])
+
+                    if (leafNode.builderRightChild.size != 1) {
+                        val nextRightOperator = nextOperatorIndex(leafNode.builderRightChild)
+                        val rightChild = Tree(leafNode, leafNode.builderRightChild[nextRightOperator])
+                        rightChild.builderLeftChild =
+                            ArrayList(leafNode.builderRightChild.subList(0, nextRightOperator))
+                        rightChild.builderRightChild = ArrayList(
+                            leafNode.builderRightChild.subList(
+                                nextRightOperator + 1,
+                                leafNode.builderRightChild.size
+                            )
+                        )
+                        leafNode.rightChild = rightChild
+                    }
+                }
+            }
+        }
+        return root
+    }
+
+    fun nextOperatorIndex(builderList: List<Token>): Int {
+        var  isSearched: (Token) -> Boolean
+        if (builderList.count { it.isAdditive() } > 0)
+            isSearched = {it.isAdditive()}
+        else if (builderList.count { it.isMultiplicative() } > 0)
+            isSearched = {it.isMultiplicative()}
+        else
+            return -1
+
+        for (i in builderList.size - 1 downTo 0) {
+            if (isSearched(builderList[i]))
+                return i
+        }
+        return -1
     }
 
     fun validateTokenList() {

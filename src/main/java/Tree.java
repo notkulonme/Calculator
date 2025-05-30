@@ -1,7 +1,9 @@
 import hu.notkulonme.tokenizer.Token;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Tree {
@@ -9,6 +11,8 @@ public class Tree {
     public Tree rightChild;
     public Tree parent;
     public Token value;
+    public ArrayList<Token> builderLeftChild;
+    public ArrayList<Token> builderRightChild;
 
     public Tree(Tree leftChild, Tree rightChild, Token value) {
         this.leftChild = leftChild;
@@ -71,6 +75,7 @@ public class Tree {
         return leftChild != null && rightChild != null;
     }
 
+
     public LinkedList<Tree> getLeafLevel() {
         var hasMoreLevel = true;
         LinkedList<Tree> list = new LinkedList<>();
@@ -86,6 +91,13 @@ public class Tree {
 
         return list;
     }
+
+    public boolean leafLevelHasBuilder(){
+        var leafLevel = getLeafLevel();
+        return leafLevel.stream()
+                .anyMatch(it -> it.builderLeftChild != null || it.builderRightChild != null);
+    }
+
 
     @Override
     public String toString() {
