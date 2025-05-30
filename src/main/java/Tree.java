@@ -98,6 +98,28 @@ public class Tree {
                 .anyMatch(it -> it.builderLeftChild != null || it.builderRightChild != null);
     }
 
+    //This function was made by chatgpt
+    public void printTree() {
+        getRoot().printTree("", true);
+    }
+
+    //this function was made by chatgpt
+    private void printTree(String prefix, boolean isTail){
+        System.out.println(prefix + (isTail ? "└── " : "├── ") + value.getValue());
+
+        List<Tree> children = new ArrayList<>();
+        if (leftChild != null) children.add(leftChild);
+        if (rightChild != null) children.add(rightChild);
+
+        for (int i = 0; i < children.size(); i++) {
+            boolean childIsTail = i == children.size() - 1;
+            children.get(i).printTree(prefix + (isTail ? "    " : "│   "), childIsTail);
+        }
+    }
+
+    public boolean exists(){
+        return value != null;
+    }
 
     @Override
     public String toString() {

@@ -37,7 +37,7 @@ class Tokenizer {
             ' ' -> TokenType.WHITESPACE
             '/' -> TokenType.OPERATOR
             '*' -> TokenType.OPERATOR
-            ',' -> TokenType.NUMBER
+            '.' -> TokenType.NUMBER
             else -> {
                 if (char.isDigit())
                     TokenType.NUMBER
@@ -66,8 +66,8 @@ class Tokenizer {
         if (bufferCurrentType != TokenType.NUMBER) {
             return false
         } else {
-            val commaCount = buffer.count { it == ',' }
-            if (buffer[0] == ',' || buffer[buffer.length - 1] == ',' || commaCount > 1)
+            val commaCount = buffer.count { it == '.' }
+            if (buffer[0] == '.' || buffer[buffer.length - 1] == '.' || commaCount > 1)
                 return true
             else
                 return false
