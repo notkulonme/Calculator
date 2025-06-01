@@ -1,6 +1,6 @@
 ﻿package hu.notkulonme.tokenizer
 
-data class Token(val value: String, val type: TokenType): TokenInterface {
+data class Token(val value: String, val type: TokenType) {
     fun isAdditive(): Boolean {
         return this.value == "+" || this.value == "-"
     }
@@ -27,9 +27,5 @@ data class Token(val value: String, val type: TokenType): TokenInterface {
             value.toDouble().toInt()
         else
             value.toDouble()
-    }
-
-    override fun getValueList(): List<TokenInterface> {
-        return listOf(this)
     }
 }
