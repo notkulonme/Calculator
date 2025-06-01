@@ -18,13 +18,13 @@ class Parser {
 
     fun parseIntoTree(): Tree {
         val rootIndex = nextOperatorIndex(tokenList)
-        val root = Tree(null,tokenList[rootIndex])
+        val root = Tree(null, tokenList[rootIndex])
         root.builderLeftChild = ArrayList(tokenList.subList(0, rootIndex))
-        root.builderRightChild = ArrayList(tokenList.subList(rootIndex+1, tokenList.size))
+        root.builderRightChild = ArrayList(tokenList.subList(rootIndex + 1, tokenList.size))
 
-        while (root.leafLevelHasBuilder()){
+        while (root.leafLevelHasBuilder()) {
             val leafLevel = root.leafLevel
-            for (leafNode in leafLevel){
+            for (leafNode in leafLevel) {
                 if (leafNode.builderLeftChild != null) {
                     if (leafNode.builderLeftChild.size == 1 && leafNode.builderLeftChild[0].type == TokenType.NUMBER)
                         leafNode.leftChild = Tree(leafNode, leafNode.builderLeftChild[0])
@@ -67,7 +67,7 @@ class Parser {
     }
 
     fun nextOperatorIndex(builderList: ArrayList<Token>): Int {
-        if (builderList.count{ it.type == TokenType.PARENTHESIS }  == 0) {
+        if (builderList.count { it.type == TokenType.PARENTHESIS } == 0) {
 
             var isSearched: (Token) -> Boolean
             if (builderList.any { it.isAdditive() })
@@ -82,15 +82,15 @@ class Parser {
                     return i
             }
             return -1
-        }else{
-            if (builderList.first().type == TokenType.PARENTHESIS && builderList.last().type == TokenType.PARENTHESIS && builderList.count { it.type == TokenType.PARENTHESIS } == 2){
+        } else {
+            if (builderList.first().type == TokenType.PARENTHESIS && builderList.last().type == TokenType.PARENTHESIS && builderList.count { it.type == TokenType.PARENTHESIS } == 2) {
                 builderList.removeFirst()
                 builderList.removeLast()
                 return nextOperatorIndex(builderList)
-            }else{
+            } else {
                 val builderBuffer = ArrayList(builderList)
 
-                for ((index, token) in builderBuffer.withIndex()){
+                for ((index, token) in builderBuffer.withIndex()) {
                     if (token.value == ")")
                         nullInsideParenthesis(builderBuffer, index)
                 }
@@ -101,9 +101,9 @@ class Parser {
 
     }
 
-    fun nullInsideParenthesis(buffer: ArrayList<Token>, index: Int){
+    fun nullInsideParenthesis(buffer: ArrayList<Token>, index: Int) {
         var i = index
-        while (buffer[i].value != "("){
+        while (buffer[i].value != "(") {
             buffer[i] = Token("", TokenType.NOT_TOKEN)
             i--
         }
@@ -146,48 +146,48 @@ class Parser {
             i++
         }
         val parenthesisStack = LinkedList<Token>()
-        for(token in tokenList){
+        for (token in tokenList) {
             parenthesisStack.push(token)
-            if (token.value == ")"){
+            if (token.value == ")") {
                 popValidContent(parenthesisStack)
             }
 
         }
-        if (parenthesisStack.any{ it.type == TokenType.PARENTHESIS })
+        if (parenthesisStack.any { it.type == TokenType.PARENTHESIS })
             throw InputError(TokenType.PARENTHESIS)
         var index = 0
-        while (index < tokenList.size){
+        while (index < tokenList.size) {
             val token = tokenList[index]
             try {
-                if (token.type == TokenType.OPERATOR){
-                    val next = tokenList[index+1]
-                    val nextNext = tokenList[index+2]
-                    val prev = tokenList[index-1]
+                if (token.type == TokenType.OPERATOR) {
+                    val next = tokenList[index + 1]
+                    val nextNext = tokenList[index + 2]
+                    val prev = tokenList[index - 1]
                     if (next.type == TokenType.NUMBER && prev.value == "(" && nextNext.value == ")") {
-                        tokenList[index -1] = Token(addOperatorToNumber(index+1), TokenType.NUMBER)
+                        tokenList[index - 1] = Token(addOperatorToNumber(index + 1), TokenType.NUMBER)
                         tokenList.remove(next)
                         tokenList.remove(nextNext)
                         tokenList.remove(token)
                     }
                 }
 
-            }catch (e: IndexOutOfBoundsException){
+            } catch (e: IndexOutOfBoundsException) {
                 continue
-            }finally {
+            } finally {
                 index++
             }
 
         }
     }
 
-    fun popValidContent(stack: LinkedList<Token>){
+    fun popValidContent(stack: LinkedList<Token>) {
         if (stack.isEmpty())
             throw EmptyStackException()
         try {
             while (stack.peek().value != "(")
                 stack.pop()
             stack.pop()
-        }catch (e: EmptyStackException){
+        } catch (e: EmptyStackException) {
             throw InputError(TokenType.PARENTHESIS)
         }
 
@@ -220,7 +220,7 @@ class Parser {
             val nextRef = tokenList[current + 1]
             if (nextRef.value == ")")
                 throw OperatorError("${curRef.value} can not be followed by )")
-            if(nextRef.value == "(" && curRef.isAdditive())
+            if (nextRef.value == "(" && curRef.isAdditive())
                 throw OperatorError("${curRef.value} can not be followed by (")
 
             i++

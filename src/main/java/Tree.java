@@ -92,7 +92,7 @@ public class Tree {
         return list;
     }
 
-    public boolean leafLevelHasBuilder(){
+    public boolean leafLevelHasBuilder() {
         var leafLevel = getLeafLevel();
         return leafLevel.stream()
                 .anyMatch(it -> it.builderLeftChild != null || it.builderRightChild != null);
@@ -104,7 +104,7 @@ public class Tree {
     }
 
     //this function was made by chatgpt
-    private void printTree(String prefix, boolean isTail){
+    private void printTree(String prefix, boolean isTail) {
         System.out.println(prefix + (isTail ? "└── " : "├── ") + value.getValue());
 
         List<Tree> children = new ArrayList<>();
@@ -117,7 +117,7 @@ public class Tree {
         }
     }
 
-    public boolean exists(){
+    public boolean exists() {
         return value != null;
     }
 

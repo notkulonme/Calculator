@@ -1,6 +1,5 @@
 ﻿package hu.notkulonme.tokenizer
 
-import hu.notkulonme.tokenizer.TokenType
 import kotlin.text.iterator
 
 class Tokenizer {

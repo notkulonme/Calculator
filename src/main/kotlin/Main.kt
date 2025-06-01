@@ -5,10 +5,10 @@ fun main() {
     var userInput = ""
     println("type stop to stop the program")
     userInput = readln()
-    while (userInput != "stop" && !userInput.isEmpty()){
+    while (userInput != "stop" && !userInput.isEmpty()) {
         try {
             println(calculator.calculate(userInput))
-        }catch (e: RuntimeException){
+        } catch (e: RuntimeException) {
             e.printStackTrace()
         }
         userInput = readln()
