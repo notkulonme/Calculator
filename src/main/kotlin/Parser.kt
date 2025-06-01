@@ -153,8 +153,31 @@ class Parser {
             }
 
         }
-        if (parenthesisStack.stream().anyMatch { it.type == TokenType.PARENTHESIS })
+        if (parenthesisStack.any{ it.type == TokenType.PARENTHESIS })
             throw InputError(TokenType.PARENTHESIS)
+        var index = 0
+        while (index < tokenList.size){
+            val token = tokenList[index]
+            try {
+                if (token.type == TokenType.OPERATOR){
+                    val next = tokenList[index+1]
+                    val nextNext = tokenList[index+2]
+                    val prev = tokenList[index-1]
+                    if (next.type == TokenType.NUMBER && prev.value == "(" && nextNext.value == ")") {
+                        tokenList[index -1] = Token(addOperatorToNumber(index+1), TokenType.NUMBER)
+                        tokenList.remove(next)
+                        tokenList.remove(nextNext)
+                        tokenList.remove(token)
+                    }
+                }
+
+            }catch (e: IndexOutOfBoundsException){
+                continue
+            }finally {
+                index++
+            }
+
+        }
     }
 
     fun popValidContent(stack: LinkedList<Token>){
