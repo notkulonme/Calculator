@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/src/main/java/InputError.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/OperatorError.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/Tree.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/TreeTest.java" charset="UTF-8" />
   </component>
 </project>

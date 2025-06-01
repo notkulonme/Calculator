@@ -15,7 +15,7 @@ class Tokenizer {
 
             val charType = getType(char)
 
-            if (charType == bufferCurrentType && bufferCurrentType != TokenType.OPERATOR) {
+            if (charType == bufferCurrentType && bufferCurrentType != TokenType.OPERATOR && bufferCurrentType != TokenType.PARENTHESIS) {
                 buffer.append(char)
             } else {
                 addValidBufferToList()
@@ -38,6 +38,8 @@ class Tokenizer {
             '/' -> TokenType.OPERATOR
             '*' -> TokenType.OPERATOR
             '.' -> TokenType.NUMBER
+            '(' -> TokenType.PARENTHESIS
+            ')' -> TokenType.PARENTHESIS
             else -> {
                 if (char.isDigit())
                     TokenType.NUMBER
